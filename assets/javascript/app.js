@@ -1,7 +1,10 @@
 
+//game variables
+
+
 function gamestart() {
-    $("#startButton").show();
     
+    //available questions array
     var questionsAvail = [
 
         {
@@ -26,27 +29,44 @@ function gamestart() {
 
     ]
 
+    //randomize questions
+    pickRandom = Math.floor(Math.random()*questionsAvail.length);
+    var questionSelected = questionsAvail[pickRandom];
 
-    pickRandom = Math.floor(Math.random()*questions.length);
-    questionSelected = questionsAvail[pickRandom];
-    
-    $("#question").html("<h2>" + questionsAvail.question + "</h2>");
-		for(var i = 0; i < questionSelected.pickRandom.length; i++) {
-			var userChoice = $("<div>");
-			userChoice.addClass("answerchoice");
-			userChoice.html(pickRandom.options[i]);
-			
-			userChoice.attr("data-guessvalue", i);
-			$("#answer").append(userChoice);
-        }
+    console.log(pickRandom);
+
+    $("#question").html("<h2>" + questionsAvail[pickRandom].question + "</h2>");
+
+    console.log(questionsAvail[pickRandom].question);
+
+    $("#options").html(
+    "<ul>" +
+    "<li>" + questionsAvail[pickRandom].options[0] + "</li>" +
+    "<li>" + questionsAvail[pickRandom].options[1] + "</li>" +
+    "<li>" + questionsAvail[pickRandom].options[2] + "</li>" +
+    "<li>" + questionsAvail[pickRandom].options[3] + "</li>" +
+    "</ul>");
+
+    console.log(questionsAvail[pickRandom].options);
 };
 
- 
-});
+function restart() {
+    $(".gameBody").hide();
+    $("#start").show();
+}
+
+$(document).ready(function() {
+    $(".gameBody").hide();
+})
 
 $(document).on("click", "#startButton", function() {
-    $("#startButton").hide();
 
+    $("#start").hide();
+    $(".gameBody").show();
     gamestart();
 
 });
+
+$(document).on("click", "#restartButton", function() {
+    restart();
+})

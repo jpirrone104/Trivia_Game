@@ -18,12 +18,13 @@ body {
     justify-content: center;
   }
 
-#gameBody {
+.gameBody {
     display: flex;
     justify-content: center;
-    /* padding: 1em;
-    background: #050001;
-    font-family: courier; */
+    padding: 1em;
+    background: #3b3034;
+    font-family: courier;
+    color: white;
     
   }
 #startButton  {
@@ -31,9 +32,20 @@ body {
   justify-content: center;
   padding: 1em;
   color:white;
-  background: #050001;
+  background: #3b3034;
   font-family: courier;
   font-weight: bold;
   
+}
+
+li {
+  list-style: none;
+  font-size: 24px;
+  line-height: 2em;
+}
+
+#question, #options {
+  display: flex;
+  flex-wrap: wrap;
 }
 
