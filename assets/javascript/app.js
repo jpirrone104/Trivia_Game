@@ -1,9 +1,9 @@
 
 //game variables
-
+var countDown = 25;
 
 function gamestart() {
-    var countDown = 25;
+    
     //available questions array
     var questionsAvail = [
 
@@ -49,6 +49,16 @@ function gamestart() {
     
     console.log(questionsAvail[pickRandom].options);
     $("#timer").html("Time remaining: " + countDown + " seconds");
+
+    $(document).on("click", "li", function() {
+
+        if(countDown > 0 && $(this) === questionsAvail[pickRandom].answer) {
+            $("#question").html(questionsAvail[pickRandom].correctpicture);
+            $("#options").html("");
+            $("#timer").html(""); 
+        }
+        
+    });
     
 };
 
@@ -79,7 +89,14 @@ function timer(){
     
      $("#timer").html("Time remaining: " + countDown  + " seconds");
     }
+// function evealuateChoice() {
+//     if(countDown > 0 && $(this) === questionsAvail[pickRandom].answer) {
+//         $("#question").html(questionsAvail[pickRandom].correctpicture);
+//         $("#options").html("");
+//         $("#timer").html("");
+// }
+// }
 
 $(document).on("click", "#restartButton", function() {
     restart();
-})
+});
