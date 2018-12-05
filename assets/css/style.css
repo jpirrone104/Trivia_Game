@@ -21,7 +21,6 @@ body {
 .gameBody {
     display: flex;
     justify-content: center;
-    padding: 1em;
     background: #3b3034;
     font-family: courier;
     color: white;
@@ -38,10 +37,21 @@ body {
   
 }
 
-li {
+li, #timer {
   list-style: none;
   font-size: 24px;
   line-height: 2em;
+  
+}
+
+#timer {
+  background-color: white;
+  color: #3B3034;
+}
+
+li.button  {
+  background-color: transparent;
+  border: none;
 }
 
 #question, #options {

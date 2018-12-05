@@ -3,7 +3,7 @@
 
 
 function gamestart() {
-    
+    var countDown = 25;
     //available questions array
     var questionsAvail = [
 
@@ -41,13 +41,15 @@ function gamestart() {
 
     $("#options").html(
     "<ul>" +
-    "<li>" + questionsAvail[pickRandom].options[0] + "</li>" +
-    "<li>" + questionsAvail[pickRandom].options[1] + "</li>" +
-    "<li>" + questionsAvail[pickRandom].options[2] + "</li>" +
-    "<li>" + questionsAvail[pickRandom].options[3] + "</li>" +
+    "<li><button>" + questionsAvail[pickRandom].options[0] + "</button></li>" +
+    "<li><button>" + questionsAvail[pickRandom].options[1] + "</button></li>" +
+    "<li><button>" + questionsAvail[pickRandom].options[2] + "</button></li>" +
+    "<li><button>" + questionsAvail[pickRandom].options[3] + "</button></li>" +
     "</ul>");
-
+    
     console.log(questionsAvail[pickRandom].options);
+    $("#timer").html("Time remaining: " + countDown + " seconds");
+    
 };
 
 function restart() {
@@ -62,10 +64,21 @@ $(document).ready(function() {
 $(document).on("click", "#startButton", function() {
 
     $("#start").hide();
+    counter = setInterval(timer, 1000)
     $(".gameBody").show();
     gamestart();
 
 });
+
+function timer(){
+    countDown--;
+    if (countDown <= 0) {
+     clearInterval(counter);
+     return;
+    }
+    
+     $("#timer").html("Time remaining: " + countDown  + " seconds");
+    }
 
 $(document).on("click", "#restartButton", function() {
     restart();
