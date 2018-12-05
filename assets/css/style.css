@@ -1,0 +1,39 @@
+.jumbotron {
+    text-align: center;
+    background-image: url("../images/theofficetrivia.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    align-content: center;
+    height: 300px;
+
+}
+
+body {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#start {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+#gameBody {
+    display: flex;
+    justify-content: center;
+    /* padding: 1em;
+    background: #050001;
+    font-family: courier; */
+    
+  }
+#startButton  {
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+  color:white;
+  background: #050001;
+  font-family: courier;
+  font-weight: bold;
+  
+}
+
