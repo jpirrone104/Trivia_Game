@@ -1,8 +1,6 @@
 
 //game variables
 var countDown = 25;
-
-
     
     //available questions array
     var questionsAvail = [
@@ -33,43 +31,49 @@ var countDown = 25;
         //clear question div
         $("#question").html("");
 
-        //randomize questions
-        pickRandom = Math.floor(Math.random()*questionsAvail.length);
-        var questionSelected = questionsAvail[pickRandom];
-        console.log(pickRandom);
-
-        //update question on question div
-        $("#question").html("<h2>" + questionsAvail[pickRandom].question + "</h2>");
-        console.log(questionsAvail[pickRandom].question);
-    
-        //render options on options div
         function updateOptions() {
 
+            pickRandom = Math.floor(Math.random()*questionsAvail.length);
+            var questionSelected = questionsAvail[pickRandom];
+            //update question on question div
+            $("#question").html("<h2>" + questionsAvail[pickRandom].question + "</h2>");
+
+            $("#timer").show();
+            $("#correct").html("");
             var optionButton = $("<button>")
             
             $.each(questionsAvail[pickRandom].options, function(index) {
                 var optionsIndex = questionsAvail[pickRandom].options[index];
                 console.log(optionsIndex);
                 $("#options").append("<button>" + optionsIndex + "</button>");
-                $("button").attr("id", optionsIndex).addClass("options");
+                $("button").addClass("option");
+                $("button").attr("id", optionsIndex);
+               
             });
         }
 
             updateOptions();
-        
-
             
         $("#timer").html("Time remaining: " + countDown + " seconds");
 
         $(document).on("click", ".option", function() {
-            alert($(this).answer)
-
-            if(countDown > 0 && $(this) === questionsAvail[pickRandom].answer) {
+            
+            if(countDown > 0) {
 
                 $("#options").html("");
-                $("#timer").html(""); 
-                $("#question").html(questionsAvail[pickRandom].correctpicture);
+                $("#timer").hide(); 
+                $("#question").html("")
+                $("#correct").append("<img src=" + questionsAvail[pickRandom].correctpicture + "/>");
                 
+                setTimeout(updateOptions, 3000);
+            } else {
+                timer();
+                $("#options").html("");
+                $("#timer").hide(); 
+                $("#question").html("")
+                $("#correct").append("<img src=" + questionsAvail[pickRandom].correctpicture + "/>");
+
+                setTimeout(updateOptions, 3000);
             }
             
         });
@@ -97,19 +101,12 @@ $(document).on("click", "#startButton", function() {
 function timer(){
     countDown--;
     if (countDown <= 0) {
-     clearInterval(counter);
-     return;
+        clearInterval(counter);
+        return;
     }
     
-     $("#timer").html("Time remaining: " + countDown  + " seconds");
+        $("#timer").html("Time remaining: " + countDown  + " seconds");
     }
-// function evealuateChoice() {
-//     if(countDown > 0 && $(this) === questionsAvail[pickRandom].answer) {
-//         $("#question").html(questionsAvail[pickRandom].correctpicture);
-//         $("#options").html("");
-//         $("#timer").html("");
-// }
-// }
 
 $(document).on("click", "#restartButton", function() {
     restart();
