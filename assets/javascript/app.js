@@ -1,15 +1,15 @@
 $.fn.trivia = function() {
     $("#tally").hide();
     var _t = this;
-    _t.userPick = null;
-    _t.answers = {
+    userPick = null;
+    answers = {
         correct: 0,
         incorrect: 0
     };
-    _t.images = null;
-    _t.count = 25;
-    _t.current = 0;
-    _t.questions = [ 
+    images = null;
+    count = 25;
+    current = 0;
+    questions = [ 
         
         {
         question: "What is the name of Jim and Pam's first child?",
@@ -76,12 +76,12 @@ $.fn.trivia = function() {
 
     }, 
     ];
-    _t.ask = function() {
-        if (_t.questions[_t.current]) {
+    updateGame = function() {
+        if (questions[current]) {
             $("#question").show();
-            $("#timer").html("Time remaining: " + _t.count + " seconds");
-            $("#question").html("<h2>"  + _t.questions[_t.current].question + "</h2>");
-            var optionsArr = _t.questions[_t.current].options;
+            $("#timer").html("Time remaining: " + count + " seconds");
+            $("#question").html("<h2>"  + questions[current].question + "</h2>");
+            var optionsArr = questions[current].options;
 
             for (var i = 0; i < optionsArr.length; i++) {
                 // $("#options").append("<button>" + optionsArr[i] + "</button>");
@@ -94,50 +94,50 @@ $.fn.trivia = function() {
                 $('#options').append(button);
                 
             }
-            window.triviaCounter = setInterval(_t.timer, 1000);
+            window.triviaCounter = setInterval(timer, 1000);
         } else {
             $("#tally").show();
             $("#tally").append( {
                 
                 text: "Unanswered: " + (
-                    _t.questions.length - (_t.answers.correct + _t.answers.incorrect)),
+                    questions.length - (answers.correct + answers.incorrect)),
                 class: "result"
             });
             
         }
     };
-    _t.timer = function() {
-        _t.count--;
-        if (_t.count <= 0) {
+    timer = function() {
+        count--;
+        if (count <= 0) {
             setTimeout(function() {
-                _t.nextQ();
+                nextQ();
             });
 
         } else {
-            $("#timer").html("Time remaining: " +  _t.count + " seconds");
+            $("#timer").html("Time remaining: " +  count + " seconds");
         }
     };
-    _t.nextQ = function() {
-        _t.current++;
+    nextQ = function() {
+        current++;
         clearInterval(window.triviaCounter);
-        _t.count = 25;
-        $('#timer').html("");
+        count = 25;
+        $("#timer").html("");
         setTimeout(function() {
-            _t.cleanUp();
-            _t.ask();
+            cleanUp();
+            updateGame();
         }, 5000)
     };
-    _t.cleanUp = function() {
+    cleanUp = function() {
         $('div[id]').each(function(item) {
             $(this).html('');
         });
-        $("#tally").html('Correct answers: ' + _t.answers.correct);
-        $("#tally").html('Incorrect answers: ' + _t.answers.incorrect);
+        $("#tally").html('Correct answers: ' + answers.correct);
+        $("#tally").html('Incorrect answers: ' + answers.incorrect);
     };
-    _t.answer = function(correct) {
+    answer = function(correct) {
         var string = correct ? 'correct' : 'incorrect';
-        _t.answers[string]++;
-        $('.' + string).html(string + ' answers: ' + _t.answers[string]);
+        answers[string]++;
+        $('.' + string).html(string + ' answers: ' + answers[string]);
     };
     return _t;
 };
@@ -147,30 +147,30 @@ $(document).on("click", "#startButton", function() {
     $("#start").hide();
     $(".gameBody").show();
     Trivia = new $(window).trivia();
-    Trivia.ask();
+    updateGame();
 });
 
 $(document).on("click", ".option", function(e) {
     console.log($(this).attr("id"));
     var selection = $(this).attr("id"),
          _t = Trivia || $(window).trivia(),
-        index = _t.questions[_t.current].correct,
-        correctAnswer = _t.questions[_t.current].options[index];
-        gifCorrect = _t.questions[_t.current].correctpicture;
-        gifIncorrect = _t.questions[_t.current].incorrectpicture;
+        index = questions[current].correct,
+        correctAnswer = questions[current].options[index];
+        gifCorrect = questions[current].correctpicture;
+        gifIncorrect = questions[current].incorrectpicture;
 
     if (selection !== index) {
         $("#options").html("Wrong Answer! The correct answer was: " + correctAnswer)
         $("#correct").append("<img src=" + gifIncorrect + "</img>");
         $("#question").hide();
         // incorrect++
-        _t.answer(false);
+        answer(false);
     } else {
         $("#options").html("Correct!!! The correct answer was: " + correctAnswer)
          $("#correct").append( "<img src=" + gifCorrect + "</img>");
          $("#question").hide();
         //  correct++
-        _t.answer(true);
+        answer(true);
     }
-    _t.nextQ();
+    nextQ();
 });

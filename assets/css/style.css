@@ -25,7 +25,9 @@ body {
     background: #3b3034;
     font-family: courier;
     color: white;
-   line-height: 2.5em;
+
+
+   
     
   }
 #startButton  {
@@ -54,6 +56,5 @@ body {
 
 }
 
-#box {
-  height: 100%;
-}
+
+
