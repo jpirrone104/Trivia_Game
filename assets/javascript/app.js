@@ -125,7 +125,7 @@ $.fn.startGame = function() {
         setTimeout(function() {
             tally();
             updateGame();
-        }, 1000)
+        }, 4000)
     };
     tally = function() {
        
