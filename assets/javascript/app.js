@@ -1,12 +1,9 @@
-$.fn.trivia = function() {
+$.fn.startGame = function() {
+    
     $("#tally").hide();
-    var _t = this;
-    userPick = null;
-    answers = {
-        correct: 0,
-        incorrect: 0
-    };
-    images = null;
+    var _this = this;
+    correct =  0,
+    incorrect = 0,
     count = 25;
     current = 0;
     questions = [ 
@@ -78,6 +75,8 @@ $.fn.trivia = function() {
     ];
     updateGame = function() {
         if (questions[current]) {
+            $("#correct").html("");
+            $("#options").html("");
             $("#question").show();
             $("#timer").html("Time remaining: " + count + " seconds");
             $("#question").html("<h2>"  + questions[current].question + "</h2>");
@@ -94,15 +93,15 @@ $.fn.trivia = function() {
                 $('#options').append(button);
                 
             }
-            window.triviaCounter = setInterval(timer, 1000);
+            window.startGameCounter = setInterval(timer, 1000);
         } else {
+            
+            $("#correct").hide();
+            $("#question").hide();
+            $("#timer").hide();
+            $("#options").hide();
             $("#tally").show();
-            $("#tally").append( {
-                
-                text: "Unanswered: " + (
-                    questions.length - (answers.correct + answers.incorrect)),
-                class: "result"
-            });
+            $("#tally").append("<h2>Game Over!<h2>")
             
         }
     };
@@ -110,67 +109,89 @@ $.fn.trivia = function() {
         count--;
         if (count <= 0) {
             setTimeout(function() {
-                nextQ();
+                
+                nextQuestion();
             });
 
         } else {
             $("#timer").html("Time remaining: " +  count + " seconds");
         }
     };
-    nextQ = function() {
+    nextQuestion = function() {
         current++;
-        clearInterval(window.triviaCounter);
+        clearInterval(window.startGameCounter);
         count = 25;
         $("#timer").html("");
         setTimeout(function() {
-            cleanUp();
+            tally();
             updateGame();
-        }, 5000)
+        }, 1000)
     };
-    cleanUp = function() {
-        $('div[id]').each(function(item) {
-            $(this).html('');
-        });
-        $("#tally").html('Correct answers: ' + answers.correct);
-        $("#tally").html('Incorrect answers: ' + answers.incorrect);
+    tally = function() {
+       
+       var ca = parseInt(correct)
+       var ia = parseInt(incorrect)
+        // var incorrectAnswer = toString(incorrect);
+        $("#tally").html("correct answers " + ca + "<br>" + "Incorrect answers: " + ia);
+        
+
+        console.log(_this);
     };
-    answer = function(correct) {
-        var string = correct ? 'correct' : 'incorrect';
-        answers[string]++;
-        $('.' + string).html(string + ' answers: ' + answers[string]);
-    };
-    return _t;
+    console.log(_this);
+    return _this;
+    
+
 };
+
+    // answer = function(correct) {
+    //     var string = correct ? 'correct' : 'incorrect';
+    //     answer[string]++;
+    //     $('.' + string).html(string + ' answers: ' + answer[string]);
+    // };
+
+
 var Trivia;
 
 $(document).on("click", "#startButton", function() {
     $("#start").hide();
     $(".gameBody").show();
-    Trivia = new $(window).trivia();
+    Trivia = new $(window).startGame();
     updateGame();
 });
 
 $(document).on("click", ".option", function(e) {
     console.log($(this).attr("id"));
     var selection = $(this).attr("id"),
-         _t = Trivia || $(window).trivia(),
+         _this = Trivia || $(window).startGame(),
         index = questions[current].correct,
         correctAnswer = questions[current].options[index];
         gifCorrect = questions[current].correctpicture;
         gifIncorrect = questions[current].incorrectpicture;
 
-    if (selection !== index) {
-        $("#options").html("Wrong Answer! The correct answer was: " + correctAnswer)
+    if (selection !== index && selection !== null) {
+        $("#options").html("<h1>FALSE. The correct answer was: " + correctAnswer + "</h1>")
         $("#correct").append("<img src=" + gifIncorrect + "</img>");
+        $("#timer").html("")
         $("#question").hide();
-        // incorrect++
-        answer(false);
-    } else {
-        $("#options").html("Correct!!! The correct answer was: " + correctAnswer)
+        incorrect++
+        
+        
+     } else if (count <= 0 && selection == null) {
+        $("#options").html("<h1>FALSE. The correct answer was: " + correctAnswer + "</h1>");
+        $("#correct").append("<img src=" + gifIncorrect + "</img>");
+        incorrect++
+       
+     } 
+    else{
+        $("#options").html("<h1>That's what she said!</h1>")
          $("#correct").append( "<img src=" + gifCorrect + "</img>");
+         $("#timer").html("")
          $("#question").hide();
-        //  correct++
-        answer(true);
+         correct++
+        
     }
-    nextQ();
+   
+    tally();
+    nextQuestion();
 });
+
